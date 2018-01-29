@@ -1,0 +1,24 @@
+{
+  "name": "zol-laptop-crawler-demo",
+  "version": "1.0.0",
+  "description": "A simple web-crawler which can get information of laptops from zol.com.cn.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/frederick-wang/zol-laptop-crawler-demo.git"
+  },
+  "keywords": [
+    "zol",
+    "laptop",
+    "crawler"
+  ],
+  "author": "Frederick Wang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frederick-wang/zol-laptop-crawler-demo/issues"
+  },
+  "homepage": "https://github.com/frederick-wang/zol-laptop-crawler-demo#readme"
+}
