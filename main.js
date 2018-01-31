@@ -1,6 +1,6 @@
 const Crawler = require('crawler')
 const url = require('url')
-// const fs = require('fs')
+const fs = require('fs')
 const Tool = require('./Tool')
 const Data = require('./Data')
 
@@ -33,6 +33,7 @@ function getBrand (name, link, done) {
     // fs.writeFileSync(`output/${name}.json`, JSON.stringify(data))
     Tool.output(name, data)
     console.log(`${name}品牌爬取完成。`)
+    console.log('----------')
     done()
   })
   c.queue({
@@ -71,6 +72,7 @@ function getBrand (name, link, done) {
                             let $td = $(element)
                             seriesData[index] = {
                               '型号': $td.text().trim() || 'NULL',
+                              '系列': res.options.seriesName,
                               '网址': url.resolve(res.request.uri.format(), $td.children('a').attr('href')) || 'NULL'
                             }
                           })
@@ -96,7 +98,7 @@ function getBrand (name, link, done) {
                           }
                         }
                       })
-                      console.log(`${name}品牌数据爬取完成。`)
+                      console.log(`${name}品牌的${res.options.seriesName}系列数据 爬取完成。`)
                       for (let item of seriesData) {
                         if (!item['CPU型号'] || item['CPU型号'] === 'NULL') {
                           item['CPU跑分'] = 'NULL'
@@ -105,9 +107,10 @@ function getBrand (name, link, done) {
                           if (!item['CPU主频'] || item['CPU主频'] !== 'NULL') {
                             str += ` @ ${item['CPU主频']}`
                           }
-                          item['CPU跑分'] = Tool.getHighestSimilarityCPU(str)[1]
+                          let result = Tool.getHighestSimilarityCPU(str)
+                          item['CPU跑分'] = result[1]
+                          fs.appendFileSync('CPU跑分匹配对照表.csv', `${str},${result[0].replace(/,/g, '，')},${result[1]}\n`)
                         }
-                        console.log(`${name}品牌数据CPU跑分处理完成。`)
                         if (!item['显卡类型'] || item['显卡类型'] === 'NULL') {
                           item['显卡跑分'] = 'NULL'
                         } else {
@@ -120,13 +123,13 @@ function getBrand (name, link, done) {
                             } else {
                               str = item['显卡芯片']
                             }
-                            item['显卡跑分'] = Tool.getHighestSimilarityGPU(str)[1]
-                            // let result = Tool.getHighestSimilarityGPU(str)
-                            // fs.appendFileSync('test2.csv', `${item['显卡类型']},${item['显卡芯片']},${result[0]},${result[1]},${result[2]}\r\n`)
+                            let result = Tool.getHighestSimilarityGPU(str)
+                            item['显卡跑分'] = result[1]
+                            fs.appendFileSync('显卡跑分匹配对照表.csv', `${item['显卡类型']},${item['显卡芯片']},${result[0].replace(/,/g, '，')},${result[1]},${result[2]}\r\n`)
                           }
                         }
-                        console.log(`${name}品牌数据显卡跑分处理完成。`)
                       }
+                      console.log(`${name}品牌的${res.options.seriesName}系列数据 CPU&显卡跑分处理完成。`)
                       data.push({
                         seriesName: res.options.seriesName,
                         seriesData: seriesData

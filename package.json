@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/frederick-wang/zol-laptop-crawler-demo#readme",
   "dependencies": {
-    "crawler": "^1.1.2"
+    "crawler": "^1.1.2",
+    "iconv-lite": "^0.4.19"
   },
   "devDependencies": {
     "eslint": "^4.16.0",
