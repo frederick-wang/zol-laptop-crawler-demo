@@ -1,6 +1,7 @@
 const Crawler = require('crawler')
 const url = require('url')
-var fs = require('fs')
+const fs = require('fs')
+const Tool = require('./Tool')
 
 let brandLinks = [
   ['联想', 'http://detail.zol.com.cn/notebook_index/subcate16_160_list_1.html'],
