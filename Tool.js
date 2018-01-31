@@ -1,3 +1,6 @@
+const fs = require('fs')
+const Data = require('./Data')
+
 class Tool {
   static getLevenshteinDistance (str1, str2) {
     let d = []
@@ -33,6 +36,49 @@ class Tool {
 
   static getSimilarity (str1, str2) {
     return 1 - Tool.getLevenshteinDistance(str1, str2) / Math.max(str1.length, str2.length)
+  }
+
+  static getHighestSimilarityCPU (str) {
+    let type = str.indexOf('Intel') === -1 ? 0 : 1
+    str = str.replace('酷睿', 'Core ')
+      .replace('奔腾', 'Pentium ')
+      .replace('赛扬', 'Celeron ')
+      .replace(/.核/g, '')
+    let max = 0
+    let maxItem = ['NULL', 'NULL']
+    for (let item of Data.CPU_MARKS) {
+      if ((type && item[0].search(/Intel/i) === -1) || (!type && item[0].search(/Intel/i) !== -1)) {
+        continue
+      }
+      if (Tool.getSimilarity(str, item[0]) > max) {
+        max = Tool.getSimilarity(str, item[0])
+        maxItem = item
+      }
+    }
+    return maxItem
+  }
+
+  static getHighestSimilarityGPU (str) {
+    str = str.replace(/AMD /i, '')
+      .replace(/[（(](.+)[）)]/g, '')
+      .replace(/GMA/i, '')
+      .replace(/Max-Q/i, 'with Max-Q Design')
+    if (str.search(/NVIDIA TITAN/i) === -1) {
+      str = str.replace(/NVIDIA /i, '')
+    }
+    let max = 0
+    let maxItem = ['NULL', 'NULL', 'NULL']
+    for (let item of Data.GPU_MARKS) {
+      if (Tool.getSimilarity(str, item[0]) > max) {
+        max = Tool.getSimilarity(str, item[0])
+        maxItem = item
+      }
+    }
+    return maxItem
+  }
+
+  output (name, data) {
+    fs.writeFileSync(`output/${name}.csv`, '')
   }
 }
 

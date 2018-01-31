@@ -1,58 +1,8 @@
 const Crawler = require('crawler')
 const url = require('url')
-const fs = require('fs')
+// const fs = require('fs')
 const Tool = require('./Tool')
-
-let brandLinks = [
-  ['联想', 'http://detail.zol.com.cn/notebook_index/subcate16_160_list_1.html'],
-  ['惠普', 'http://detail.zol.com.cn/notebook_index/subcate16_223_list_1.html'],
-  ['戴尔', 'http://detail.zol.com.cn/notebook_index/subcate16_21_list_1.html'],
-  ['苹果', 'http://detail.zol.com.cn/notebook_index/subcate16_544_list_1.html'],
-  ['华硕', 'http://detail.zol.com.cn/notebook_index/subcate16_227_list_1.html'],
-  ['神舟', 'http://detail.zol.com.cn/notebook_index/subcate16_1191_list_1.html'],
-  ['ThinkPad', 'http://detail.zol.com.cn/notebook_index/subcate16_32108_list_1.html'],
-  ['Acer宏碁', 'http://detail.zol.com.cn/notebook_index/subcate16_218_list_1.html'],
-  ['机械革命', 'http://detail.zol.com.cn/notebook_index/subcate16_35578_list_1.html'],
-  ['三星', 'http://detail.zol.com.cn/notebook_index/subcate16_98_list_1.html'],
-  ['雷神', 'http://detail.zol.com.cn/notebook_index/subcate16_35393_list_1.html'],
-  ['Alienware', 'http://detail.zol.com.cn/notebook_index/subcate16_33520_list_1.html'],
-  ['机械师', 'http://detail.zol.com.cn/notebook_index/subcate16_36359_list_1.html'],
-  ['华为', 'http://detail.zol.com.cn/notebook_index/subcate16_613_list_1.html'],
-  ['炫龙', 'http://detail.zol.com.cn/notebook_index/subcate16_36391_list_1.html'],
-  ['微软', 'http://detail.zol.com.cn/notebook_index/subcate16_364_list_1.html'],
-  ['MSI微星', 'http://detail.zol.com.cn/notebook_index/subcate16_133_list_1.html'],
-  ['小米', 'http://detail.zol.com.cn/notebook_index/subcate16_34645_list_1.html'],
-  ['雷蛇', 'http://detail.zol.com.cn/notebook_index/subcate16_1590_list_1.html'],
-  ['Terrans', 'Force', 'http://detail.zol.com.cn/notebook_index/subcate16_34305_list_1.html'],
-  ['LG', 'http://detail.zol.com.cn/notebook_index/subcate16_143_list_1.html'],
-  ['技嘉', 'http://detail.zol.com.cn/notebook_index/subcate16_234_list_1.html'],
-  ['海尔', 'http://detail.zol.com.cn/notebook_index/subcate16_221_list_1.html'],
-  ['中柏', 'http://detail.zol.com.cn/notebook_index/subcate16_36793_list_1.html'],
-  ['火影', 'http://detail.zol.com.cn/notebook_index/subcate16_36607_list_1.html'],
-  ['昂达', 'http://detail.zol.com.cn/notebook_index/subcate16_265_list_1.html'],
-  ['清华同方', 'http://detail.zol.com.cn/notebook_index/subcate16_24_list_1.html'],
-  ['博本', 'http://detail.zol.com.cn/notebook_index/subcate16_52061_list_1.html'],
-  ['酷比魔方', 'http://detail.zol.com.cn/notebook_index/subcate16_2251_list_1.html'],
-  ['富士通', 'http://detail.zol.com.cn/notebook_index/subcate16_283_list_1.html'],
-  ['松下', 'http://detail.zol.com.cn/notebook_index/subcate16_84_list_1.html'],
-  ['东芝', 'http://detail.zol.com.cn/notebook_index/subcate16_209_list_1.html'],
-  ['索立信', 'http://detail.zol.com.cn/notebook_index/subcate16_34055_list_1.html'],
-  ['谷歌', 'http://detail.zol.com.cn/notebook_index/subcate16_1922_list_1.html'],
-  ['刀客', 'http://detail.zol.com.cn/notebook_index/subcate16_47070_list_1.html'],
-  ['镭波', 'http://detail.zol.com.cn/notebook_index/subcate16_34130_list_1.html'],
-  ['台电', 'http://detail.zol.com.cn/notebook_index/subcate16_970_list_1.html'],
-  ['麦本本', 'http://detail.zol.com.cn/notebook_index/subcate16_37353_list_1.html'],
-  ['VAIO', 'http://detail.zol.com.cn/notebook_index/subcate16_50829_list_1.html'],
-  ['ENZ', 'http://detail.zol.com.cn/notebook_index/subcate16_51642_list_1.html'],
-  ['锡恩帝', 'http://detail.zol.com.cn/notebook_index/subcate16_34329_list_1.html'],
-  ['宝扬', 'http://detail.zol.com.cn/notebook_index/subcate16_47841_list_1.html'],
-  ['海鲅', 'http://detail.zol.com.cn/notebook_index/subcate16_35232_list_1.html'],
-  ['爱尔轩', 'http://detail.zol.com.cn/notebook_index/subcate16_50972_list_1.html'],
-  ['紫麦', 'http://detail.zol.com.cn/notebook_index/subcate16_49394_list_1.html'],
-  ['金属大师', 'http://detail.zol.com.cn/notebook_index/subcate16_51268_list_1.html'],
-  ['SOSOON', 'http://detail.zol.com.cn/notebook_index/subcate16_33832_list_1.html'],
-  ['联想扬天', 'http://detail.zol.com.cn/notebook_index/subcate16_36595_list_1.html']
-]
+const Data = require('./Data')
 
 let c = new Crawler({
   rateLimit: 1000,
@@ -66,9 +16,9 @@ let c = new Crawler({
   }
 })
 
-console.log(`开始爬取数据，一共有${brandLinks.length}个品牌。`)
+console.log(`开始爬取数据，一共有${Data.BRAND_LINKS.length}个品牌。`)
 
-for (let item of brandLinks) {
+for (let item of Data.BRAND_LINKS) {
   c.queue([{
     html: '<html></html>',
     name: item[0],
@@ -80,7 +30,8 @@ function getBrand (name, link, done) {
   let c = new Crawler()
   let data = []
   c.on('drain', () => {
-    fs.writeFileSync(`output/${name}.json`, JSON.stringify(data))
+    // fs.writeFileSync(`output/${name}.json`, JSON.stringify(data))
+    Tool.output(name, data)
     console.log(`${name}品牌爬取完成。`)
     done()
   })
@@ -119,32 +70,63 @@ function getBrand (name, link, done) {
                           $tr.children('td').each(function (index, element) {
                             let $td = $(element)
                             seriesData[index] = {
-                              '型号': $td.text().trim(),
-                              '网址': url.resolve(res.request.uri.format(), $td.children('a').attr('href'))
+                              '型号': $td.text().trim() || 'NULL',
+                              '网址': url.resolve(res.request.uri.format(), $td.children('a').attr('href')) || 'NULL'
                             }
                           })
                         } else if (index === 1) {
                           $tr.children('td').each(function (index, element) {
-                            seriesData[index]['图片'] = $(element).find('img').attr('src')
+                            seriesData[index]['图片'] = $(element).find('img').attr('src').trim() || 'NULL'
                           })
                         } else if (index === 2) {
                           $tr.children('td').each(function (index, element) {
-                            seriesData[index]['价格'] = $(element).find('.price').children('b').text().trim()
+                            seriesData[index]['价格'] = $(element).find('.price').children('b').text().trim() || 'NULL'
                             if ($(element).find('.price-status').length === 0) {
                               seriesData[index]['状态'] = '正常'
                             } else {
-                              seriesData[index]['状态'] = $(element).find('.price-status').text()
+                              seriesData[index]['状态'] = $(element).find('.price-status').text().trim() || 'NULL'
                             }
                           })
                         } else {
                           if ($tr.children('td').length > 0) {
                             let param = $tr.children('th').text().trim()
                             $tr.children('td').each(function (index, element) {
-                              seriesData[index][param] = $(element).text().trim()
+                              seriesData[index][param] = $(element).text().trim() || 'NULL'
                             })
                           }
                         }
                       })
+                      console.log(`${name}品牌数据爬取完成。`)
+                      for (let item of seriesData) {
+                        if (!item['CPU型号'] || item['CPU型号'] === 'NULL') {
+                          item['CPU跑分'] = 'NULL'
+                        } else {
+                          let str = item['CPU型号']
+                          if (!item['CPU主频'] || item['CPU主频'] !== 'NULL') {
+                            str += ` @ ${item['CPU主频']}`
+                          }
+                          item['CPU跑分'] = Tool.getHighestSimilarityCPU(str)[1]
+                        }
+                        console.log(`${name}品牌数据CPU跑分处理完成。`)
+                        if (!item['显卡类型'] || item['显卡类型'] === 'NULL') {
+                          item['显卡跑分'] = 'NULL'
+                        } else {
+                          if (!item['显卡芯片'] || item['显卡芯片'] === 'NULL') {
+                            item['显卡跑分'] = 'NULL'
+                          } else {
+                            let str
+                            if (item['显卡类型'].indexOf('双显卡') !== -1) {
+                              str = item['显卡芯片'].replace(/[＋+](.+)$/g, '')
+                            } else {
+                              str = item['显卡芯片']
+                            }
+                            item['显卡跑分'] = Tool.getHighestSimilarityGPU(str)[1]
+                            // let result = Tool.getHighestSimilarityGPU(str)
+                            // fs.appendFileSync('test2.csv', `${item['显卡类型']},${item['显卡芯片']},${result[0]},${result[1]},${result[2]}\r\n`)
+                          }
+                        }
+                        console.log(`${name}品牌数据显卡跑分处理完成。`)
+                      }
                       data.push({
                         seriesName: res.options.seriesName,
                         seriesData: seriesData
