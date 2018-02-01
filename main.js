@@ -125,7 +125,7 @@ function getBrand (name, link, done) {
                             }
                             let result = Tool.getHighestSimilarityGPU(str)
                             item['显卡跑分'] = result[1]
-                            fs.appendFileSync('显卡跑分匹配对照表.csv', `${item['显卡类型']},${item['显卡芯片']},${result[0].replace(/,/g, '，')},${result[1]},${result[2]}\r\n`)
+                            fs.appendFileSync('显卡跑分匹配对照表.csv', `${item['显卡类型']},${item['显卡芯片']},${result[0].replace(/,/g, '，')},${result[1]},${result[2]}\n`)
                           }
                         }
                       }
